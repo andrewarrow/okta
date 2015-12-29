@@ -1,12 +1,15 @@
-require "okta/version"
+require 'okta/version'
+require 'net/http'
+require 'json'
 
 module Okta
   API_VERSION = 'v1'
 
   class << self
-    attr_accessor :company, :token, :version
+    attr_accessor :company, :token
+    attr_writer :version
 
-     # 
+    # 
     # API version
     # 
     # @return [String] API version used
@@ -15,7 +18,7 @@ module Okta
     end
 
     def access_url
-     "https://{company}.okta.com/api/{version}"
+     "https://#{company}.okta.com/api/#{version}"
     end
 
     # 
@@ -26,7 +29,7 @@ module Okta
     # @option params [String] :version Okta API version (v1 by default)
     # 
     def configure(params)
-      self.comapny = params[:company]
+      self.company = params[:company]
       self.token = params[:token]
       self.version = params[:version]
     end
@@ -37,8 +40,23 @@ module Okta
     # @return [Hash] request headers
     def headers
       {
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json',
         'Authorization' => "SSWS #{token}"
       }
+    end
+
+    def get(path)
+      # Get URI
+      uri = URI(access_url)
+      # Add path
+      uri.path += path
+      res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+        # Execute request
+        http.send_request('GET', uri, nil, headers)
+      end
+      # Try to parse response
+      JSON.parse(res.body) rescue res.body
     end
   end
 end
