@@ -1,10 +1,19 @@
 module Okta
   class User
-    attr :id, :status, :raw
+    attr :status, :raw
     attr_accessor :email, :firstName, :lastName
 
     # 
+    # User id
+    # 
+    # @return [String] user id    
+    def id
+      @id ||= email
+    end
+
+    # 
     # Get all users
+    # @param params [Hash] optional parameters
     # 
     # @return [Array<User>] all users
     def self.all
@@ -50,6 +59,16 @@ module Okta
       @lastName = attrs['profile']['lastName']
       @raw = attrs
       self
+    end
+
+    # 
+    # Get member groups
+    # 
+    # @return [Array<Group>] member groups
+    def groups()
+      Okta.get("/users/#{id}/groups").map do |group|
+        Group.new.parse(group)
+      end
     end
   end
 end

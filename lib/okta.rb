@@ -48,9 +48,10 @@ module Okta
       }
     end
 
-    def get(path)
+    def get(path, params = {})
       # Get URI
       uri = URI(access_url)
+      uri.query = URI.encode_www_form(params)
       # Add path
       uri.path += path
       res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|

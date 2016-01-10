@@ -5,10 +5,11 @@ module Okta
 
     # 
     # Get all groups
+    # @param params [Hash] optional parameters
     # 
     # @return [Array<Group>] group models
-    def self.all
-      Okta.get("/groups").map do |group|
+    def self.all(params = {})
+      Okta.get("/groups", params).map do |group|
         new.parse(group)
       end
     end
