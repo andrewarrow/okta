@@ -18,7 +18,7 @@ module Okta
           "recovery_question": { "question": question, "answer": answer }
         }
       }
-      Okta.post("/users?activate=true", data)
+      Okta.post("/users", data, {activate:true})
     end
   end
 end

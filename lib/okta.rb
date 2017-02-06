@@ -64,8 +64,9 @@ module Okta
       JSON.parse(res.body) rescue res.body
     end
 
-    def post(path, data)
+    def post(path, data, params={})
       uri = URI(access_url)
+      uri.query = URI.encode_www_form(params)
       uri.path += path
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
