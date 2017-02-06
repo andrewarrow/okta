@@ -14,7 +14,7 @@ module Okta
           "mobilePhone": phone
         },
         "credentials": {
-          "password" : { "value": password },
+          "password": {"value": password },
           "recovery_question": { "question": question, "answer": answer }
         }
       }
