@@ -20,7 +20,7 @@ module Okta
     end
 
     def access_url
-     "https://#{company}.okta.com/api/#{version}"
+      ENV['OKTA_URL']
     end
 
     # 
@@ -41,6 +41,7 @@ module Okta
     # 
     # @return [Hash] request headers
     def headers
+      token = ENV['OKTA_TOKEN']
       {
         'Content-Type' => 'application/json',
         'Accept' => 'application/json',
@@ -61,5 +62,17 @@ module Okta
       # Try to parse response
       JSON.parse(res.body) rescue res.body
     end
+
+    def post(path, data)
+      uri = URI(access_url)
+      uri.path += path
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      request = Net::HTTP::Post.new(uri.request_uri, headers)
+      request.body = data.to_json
+      res = http.request(request)
+      JSON.parse(res.body) rescue res.body
+    end
+
   end
 end

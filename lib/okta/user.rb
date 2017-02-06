@@ -32,6 +32,11 @@ module Okta
       new.parse(user)
     end
 
+    def self.change_password(id, new_password)
+      data = {credentials: {password: {value: new_password}}}
+      Okta.post("/users/#{id}", data)
+    end
+
     # 
     # Initialize user
     # @param [Hash] attrs user attributes
