@@ -9,5 +9,9 @@ module Okta
       data = {profile: data}
       Okta.post("/apps/#{aid}/users/#{uid}", data)
     end
+
+    def self.get(aid, uid)
+      Okta.get("/apps/#{aid}/users/#{uid}")
+    end
   end
 end
