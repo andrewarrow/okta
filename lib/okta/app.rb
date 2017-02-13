@@ -6,7 +6,7 @@ module Okta
     
     # /api/v1/apps/:aid/users/:uid
     def self.update(aid, uid, data)
-      data = {profile: {data}}
+      data = {profile: data}
       Okta.post("/apps/#{aid}/users/#{uid}", data)
     end
   end
