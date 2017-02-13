@@ -1,6 +1,7 @@
 require 'okta/version'
 require 'okta/user'
 require 'okta/auth'
+require 'okta/app'
 require 'okta/group'
 require 'net/http'
 require 'json'
