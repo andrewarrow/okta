@@ -75,5 +75,22 @@ module Okta
         Group.new.parse(group)
       end
     end
+
+
+    def self.create(firstname, lastname, email, login, phone, password)
+        data = {
+	    profile: {
+		firstName: firstname,
+		lastName: lastname,
+		email: email, 
+		login: login,
+		mobilePhone: phone
+	    },
+	    credentials: {password: {value: password}}
+	}
+	Okta.post("/users", data)
+    end
+
   end
+
 end
